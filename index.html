@@ -90,64 +90,33 @@
 
 <body class="h-screen flex flex-col bg-nord0">
   <!-- This example requires Tailwind CSS v2.0+ -->
-  <nav class="dark bg-nord0 divide-y">
-    <div class="dark mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-      <div class="dark relative flex h-20 items-center justify-between">
-        <div class="dark absolute inset-y-0 left-0 flex items-center sm:hidden">
-          <!-- Mobile menu button-->
-
-        </div>
-        <div class="dark flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-          <div class="dark flex flex-shrink-0 items-center">
-            <img class="dark hidden h-8 w-auto lg:block" src="senti-logo.svg"
-              alt="Your Company">
-          </div>
-          <div class="dark hidden sm:ml-6 sm:block">
-            <div class="dark flex flex-1 space-x-4 items-center justify-center">
-              <!-- Current: "bg-gray-900 text-nord4", Default: "text-nord5 hover:bg-nord1 hover:text-nord4" -->
-              <a href="addyourSenti.html" class="dark bg-nord3 text-nord4 m-2 px-3 py-2 rounded-md text-sm font-medium"
-                aria-current="page">add your senti</a>
-
-              <a href="find.html"
-                class="dark text-nord5 hover:bg-nord1 hover:text-nord4 px-3 py-2 rounded-md text-sm font-medium">find
-                sentis</a>
-            </div>
-          </div>
-        </div>
-        <div class="dark absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-          <button class="dark flex flex-cols">
-            <a href="Sentis.html"
-              class="dark flex flex-cols items-center space-x-4 text-nord5 hover:bg-nord1 hover:text-nord4 px-3 py-2 rounded-md text-sm font-medium">
-              see sentis
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="dark w-6 h-6 ml-2 text-nord5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-              </svg>
-            </a>
-          </button>
-        </div>
+  <nav class="bg-nord0 border-gray-200 px-5 sm:px-4 py-2.5 rounded">
+    <div class="container flex flex-wrap justify-between items-center mx-auto">
+      <a href="index.html" class="flex items-center">
+          <img src="senti-logo.svg" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+      </a>
+      <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-nord6 rounded-lg md:hidden hover:bg-nord2 focus:outline-none focus:ring-2 focus:ring-nord3 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+      </button>
+      <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+        <ul class="flex flex-col p-4 mt-4 bg-nord0 rounded-lg border border-nord3 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-nord0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <li>
+            <a href="index.html" class="block py-2 pr-4 pl-3 text-nord6 bg-gradient-to-r from-nord8 to-nord9 hover:from-nord9 hover:to-nord8 rounded md:bg-transparent md:text-transparent md:bg-clip-text md:bg-gradient-to-r md:from-nord8 md:to-nord9 md:hover:from-nord9 md:hover:to-nord8 md:p-0 dark:text-white" aria-current="page">add your senti</a>
+          </li>
+          <li>
+            <a href="find.html" class="block py-2 pr-4 pl-3 text-nord6 rounded bg-gradient-to-r hover:from-nord8 hover:to-nord9 md:hover:bg-transparent md:text-white md:hover:text-transparent md:hover:bg-clip-text md:hover:bg-gradient-to-r md:hover:from-nord9 md:hover:to-nord8 md:border-0 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">find senti</a>
+          </li>
+          <li>
+            <a href="sentis.html" class="block py-2 pr-4 pl-3 text-nord6 rounded bg-gradient-to-r hover:from-nord8 hover:to-nord9 md:hover:bg-transparent md:text-white md:hover:text-transparent md:hover:bg-clip-text md:hover:bg-gradient-to-r md:hover:from-nord9 md:hover:to-nord8 md:border-0 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">see senti</a>
+          </li>
+        </ul>
       </div>
     </div>
-
-    <!-- Mobile menu, show/hide based on menu state. -->
-    <div class="dark sm:hidden" id="mobile-menu">
-      <div class="dark space-y-1 px-2 pt-2 pb-3">
-        <!-- Current: "bg-gray-900 text-nord4", Default: "text-nord5 hover:bg-nord1 hover:text-nord4" -->
-        <a href="#" class="dark bg-zinc-600 text-nord4 px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Add Your
-          Senti</a>
-
-        <a href="#" class="dark text-nord5 hover:bg-nord1 hover:text-nord4 px-3 py-2 rounded-md text-sm font-medium">Find
-          Sentis</a>
-
-        <a href="#" class="dark text-nord5 hover:bg-nord1 hover:text-nord4 px-3 py-2 rounded-md text-sm font-medium">See
-          Sentis</a>
-      </div>
-    </div>
-    <hr class="dark space-y-1 border-1 border-nord3">
+    <hr class="mt-2 invisible sm:visible dark space-y-1 border-1 border-nord3">
   </nav>
   <div class="dark h-4/5 flex flex-col justify-center items-center border-3" method="GET">
-    <form action="Sentis.html" class="dark w-4/5 h-4/5 px-20 py-10 flex flex-col justify-center space-y-8" method="GET" id="addSenti">
-      <div class="dark space-x-2 flex flex-row justify-center">
+    <form action="Sentis.html" class="dark sm:w-4/5 h-4/5 px-5 sm:px-20 sm:py-10 flex flex-col justify-center space-y-8" method="GET" id="addSenti">
+      <div class="dark md:space-x-2 flex flex-col md:flex-row justify-center">
         <h1 class="dark text-nord4 text-6xl font-extrabold">i'm feeling</h1>
         <h1 id="typeText"
           class="dark font-extrabold text-transparent text-6xl bg-clip-text bg-gradient-to-r from-nord8 to-nord9">
@@ -165,13 +134,24 @@
         <textarea id="message" rows="4" style="resize: none;"
           class="text-xl block p-2.5 w-full text-gray-900 bg-gray-50 rounded-lg border border-nord2 focus:ring-nord2 focus:border-nord2 dark:bg-nord1 dark:border-nord0 dark:placeholder-gray-400 dark:text-nord8"
           placeholder="Describe your senti..."></textarea>
-        <div class="flex flex-row justify-between">
-          <div class="flex flex-row justify-left around space-x-0.5 text-nord6">
-            <p1 id="characters" class="text-l font-bold">0</p1>
-            <p1 id="characterLabel" class="text-l"> characters</p1>
+        <div class="flex flex-row justify-between items-center">
+          <div class="flex flex-row justify-left around font-light space-x-1 text-gray-500 dark:text-gray-400">
+            <p1 id="characters" class="text-sm font-bold">0</p1>
+            <p1 id="characterLabel" class="text-sm"> characters</p1>
           </div>
-          <button type="submit"
-            class="text-nord6 bg-gradient-to-r from-nord8 to-nord9 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-nord8 dark:focus:ring-nord9 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
+          <div class="flex flex-row justify-end items-center around text-nord6">
+            <p class="invisible lg:visible flex items-center text-sm font-light text-gray-500 dark:text-gray-400 mr-3">why we need your location <button data-popover-target="popover-description" data-popover-placement="bottom-end" type="button"><svg class="ml-2 w-4 h-4 text-gray-400 hover:text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg><span class="sr-only">Show information</span></button></p>
+            <p class="lg:hidden flex items-center text-sm font-light text-gray-500 dark:text-gray-400 mr-3">location<button data-popover-target="popover-description" data-popover-placement="bottom-end" type="button"><svg class="ml-2 w-4 h-4 text-gray-400 hover:text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg><span class="sr-only">Show information</span></button></p>
+<div data-popover id="popover-description" role="tooltip" class="inline-block absolute invisible z-10 w-72 text-sm font-light text-gray-500 bg-white rounded-lg border border-gray-200 shadow-sm opacity-0 transition-opacity duration-300 dark:bg-nord1 dark:border-gray-600 dark:text-gray-400">
+    <div class="p-3 space-y-2">
+        <h3 class="font-semibold text-gray-900 dark:text-nord6">Anonymous heatmap</h3>
+        <p>We collect anonymous location information in order to populate our heatmap of emotions. This allows us to provide our space analysis for you! Your location will never be matched with your identity.</p>
+    </div>
+    <div data-popper-arrow></div>
+</div>
+            <button type="submit"
+              class="text-nord6 bg-gradient-to-r from-nord8 to-nord9 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-nord8 dark:focus:ring-nord9 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
+          </div>
         </div>
       </div>
     </form>
@@ -242,14 +222,21 @@ function submit(e)
 {
     e.preventDefault();
 
-    var date = new Date();
-    var type = document.getElementById("typeText").innerText;
-    var text = document.getElementById("message").value;
-    var value = document.getElementById("valueControl").value;
-    var location = "Tepper";
-    var time  = date.toLocaleDateString() + ", " + date.toLocaleTimeString();
-    console.log('working');
-    saveMessages(location, type, value, text, time);
+    
+    if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(saveLocation);
+    }
+}
+
+function saveLocation(position) {
+  var date = new Date();
+  var type = document.getElementById("typeText").innerText;
+  var text = document.getElementById("message").value;
+  var value = document.getElementById("valueControl").value;
+  var location = [position.coords.latitude, position.coords.longitude];
+  var time  = date.toLocaleDateString() + ", " + date.toLocaleTimeString();
+  console.log('working');
+  saveMessages(location, type, value, text, time);
 }
 
 const saveMessages = (location, type, value, text, time) => 
@@ -270,6 +257,24 @@ const saveMessages = (location, type, value, text, time) =>
 
 const getElementVal = (id) => {
     return document.getElementById(id).value;
+};
+
+// set the tooltip content element
+const targetEl = document.getElementById('tooltipContent');
+
+// set the element that trigger the tooltip using hover or click
+const triggerEl = document.getElementById('tooltipButton');
+
+// options with default values
+const options = {
+  placement: 'bottom',
+  triggerType: 'hover',
+  onHide: () => {
+      console.log('tooltip is shown');
+  },
+  onShow: () => {
+      console.log('tooltip is hidden');
+  }
 };
 </script>
 </body>
