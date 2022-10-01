@@ -2,10 +2,11 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Senti | find sentis</title>
   <meta name="description" content="See emotions on a anonymous dot density university map.">
   <meta property="og:image" content="./senti-poster.png">
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
@@ -14,8 +15,10 @@
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
   <link rel="manifest" href="./site.webmanifest">
+  <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/dark/main.css" />
+  <script src="https://js.arcgis.com/4.24/"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/heatmap.js/2.0.0/heatmap.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/heatmap.js/2.0.0/heatmap.min.js"></script> -->
 
   <script>
       tailwind.config = {
@@ -23,19 +26,6 @@
       extend:{
         colors: {
           'regal-blue': '#243c5a',
-          /*
-          nord0->nord3, dark colors,"polar night"
-          nord4->nord6, light colors, "snow storm"
-          nord7 = pale green
-          nord8 = blue
-          nord9 = blue
-          nord10 = blue
-          nord11 = red
-          nord12 = orange
-          nord13 = yellow
-          nord14 = green
-          nord15 = purple
-          */
           'nord0': '#2e3440',
           'nord1': '#3b4252',
           'nord2': '#434c5e',
@@ -62,7 +52,13 @@
 
   </script>
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+
+   
+
+
 </head>
+
 <body class="bg-nord0">
   <!-- This example requires Tailwind CSS v2.0+ -->
   <nav class="bg-nord0 border-gray-200 px-5 sm:px-4 py-2.5 rounded">
@@ -95,12 +91,231 @@
       <h1 class="font-extrabold text-transparent text-5xl bg-clip-text bg-gradient-to-r from-nord8 to-nord9">
       sentis.
 </h1>
-
-
-
 </div>
 
+
+
+
 <div id="beYouGrid" class="w-full grid grid-cols-2 gap-4"></div>
+<div id="viewDiv" style=" width: 1500px; height:800px; margin: 0 auto"></div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+  import { getDatabase, push, set, child, ref, onValue} from "https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAHRbCmE_ynGBxlW0x5J9u9H3XBOrFhedA",
+    authDomain: "beyou-21d2f.firebaseapp.com",
+    databaseURL: "https://beyou-21d2f-default-rtdb.firebaseio.com",
+    projectId: "beyou-21d2f",
+    storageBucket: "beyou-21d2f.appspot.com",
+    messagingSenderId: "718679255077",
+    appId: "1:718679255077:web:a5d19b54e474a1d968b7cc",
+    measurementId: "G-FVD7M6CJ1Z"
+  };
+
+  const app = initializeApp(firebaseConfig);
+
+  // So we don't add duplicate posts
+  let current_posts_added = [];
+  // So we can access the current type in findPost / onValue
+  var types = ["See BeSads.", "See BeDowns.", "See BeContents.", "See BeHappys.", "See BeEcstatics."];
+  var type = document.getElementById("typeText");
+  var active = document.getElementById("content");
+
+  var postDatabase = getDatabase(app);
+
+
+  current_posts_added = []
+  const happyPost = ref(postDatabase);
+  var posts = child(happyPost, 'Posts');
+  // var grid = document.getElementById("beYouGrid");
+  // grid.innerHTML = "";
+  
+  var array = [];
+
+  onValue(posts, (snapshot) => {
+      snapshot.forEach(function (childSnapshot) {
+
+          // get current "be" subsection
+
+          console.log("----------------");
+          console.log(childSnapshot.val().text);
+          console.log(childSnapshot.val().type, childSnapshot.key);
+          console.log(childSnapshot.val().location);
+          console.log(childSnapshot.val().time);
+          array.push(
+            {
+            latitude: childSnapshot.val().location[0],
+            longitude: childSnapshot.val().location[1],
+            mag: childSnapshot.val().value / 100.,
+          
+            });
+          console.log(current_posts_added);
+              console.log("SUCCESS");
+              current_posts_added.push(childSnapshot.key);
+
+              // Adding the html component
+              // grid.innerHTML += "<a href='#' class='dark bg-nord12 block w-full p-6 bg-nord1 rounded-lg border border-nord3 shadow-md hover:bg-nord2 dark:bg-nord1 dark:border-nord3 dark:hover:bg-nord3'> <h5 class='mb-2 text-2xl font-bold tracking-tight text-transparent text-3xl bg-clip-text bg-gradient-to-r from-nord8 to-nord9'>" + childSnapshot.val().location + "</h5> <p class='font-normal text-gray-700 dark:text-gray-400'>" + childSnapshot.val().time + "</p> </a>";
+  });
+});
+console.log("START PRINT");
+console.log(array);
+  require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer", "esri/widgets/Legend", "esri/layers/CSVLayer"], 
+  (Map, MapView, FeatureLayer, Legend, CSVLayer) => {
+          const defaultSym = {
+            type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+            outline: {
+              // autocasts as new SimpleLineSymbol()
+              color: "#FFFFFF",
+              opacity: 0,
+              width: 1
+            }
+          };
+
+
+
+
+          /*****************************************************************
+           * Set a size visual variable on the renderer. Size visual variables
+           * create continuous ramps that map low data values to small icons
+           * and high data values to large icons. Features
+           * with data values in between the min and max data values are assigned
+           * a size proportionally between the min and max sizes specified in
+           * `minSize` and `maxSize` or `stops`.
+           *****************************************************************/
+
+          const renderer = {
+            type: "simple", // autocasts as new SimpleRenderer()
+            symbol: defaultSym, // the default symbol defined in step 1
+            label: "% population in poverty by county", // label for the legend
+            visualVariables: [
+              {
+                type: "color", // indicates this is a color visual variable
+                field: "mag", // total population in poverty
+                stops: [
+                  {
+                    value: 0.0, // features where < 10% of the pop in poverty
+                    color: "#0095EF", // will be assigned this color (beige)
+                    label: "0.0" // label to display in the legend
+                  },
+                  {
+                    value: 1.0, // features where > 30% of the pop in poverty
+                    color: "#FE433C", // will be assigned this color (purple)
+                    label: "1.0%" // label to display in the legend
+                  }
+                ]
+
+                // features with values between 0.1 - 0.3 will be assigned
+                // a color on a ramp between beige and purple proportional
+                // to where the value falls between 0.1 and 0.3
+              }
+            ]
+          };
+
+
+        const csv = `latitude|longitude|mag
+        40.418|20.553|0.1
+        40.445014|-79.943444|0.2
+        41.445014|-79.943444|0.6
+        40.5.445014|-79.943444|0.4
+        42.445014|-79.943444|0.7`;
+
+        const blob = new Blob([csv], {
+          type: "plain/text"
+        });
+        let url = URL.createObjectURL(blob);
+
+          const povLayer = new CSVLayer({
+            url: url,
+            renderer: renderer,
+            title: "Poverty in the southeast U.S.",
+            popupTemplate: {
+              // autocasts as new PopupTemplate()
+              title: "{mag}",
+              content: "Sentiment: {mag}",
+              fieldInfos: [
+                {
+                  fieldName: "mag",
+                  format: {
+                    digitSeparator: true,
+                    places: 2
+                  }
+                }
+              ]
+            }
+          });
+
+          console.log("START PRINT  AAIN");
+          console.log(array);
+
+
+          
+          // const povLayer = new FeatureLayer({
+          //     source: array,  // array of graphics objects
+          //     renderer: renderer,
+          //     fields: [{
+          //     name: "latitude",
+          //     type: "float"
+          //     }, {
+          //     name: "longitude",
+          //     type: "float"
+          //     }, {
+          //     name: "mag",
+          //     type: "float"
+          //     }],
+          //     popupTemplate: {
+          //     // autocasts as new PopupTemplate()
+          //     title: "{mag}",
+          //     content: "Sentiment: {mag}",
+          //     fieldInfos: [
+          //       {
+          //         fieldName: "mag",
+          //         format: {
+          //           digitSeparator: true,
+          //           places: 2
+          //         }
+          //       }
+          //     ]
+          //   }
+              
+          // });
+
+
+
+          const map = new Map({
+            basemap: "dark-gray-vector",
+            layers: [povLayer]
+          });
+
+          const view = new MapView({
+            container: "viewDiv",
+            map: map,
+            center: [-85.0502, 33.125524],
+            zoom: 5
+          });
+
+          /******************************************************************
+           *
+           * Add layers to layerInfos on the legend
+           *
+           ******************************************************************/
+
+          view.ui.add(
+            new Legend({
+              view: view
+            }),
+            "top-right"
+          );
+        });
+
+
+
+</script>
+
+
+
+
+
 <div id="container-fluid" style="width: 1130px; height: 1000px; margin: 0 auto">                          
   <iframe src="heatmap.html" width="1130" height="1000"></iframe>                          
  </div>
@@ -111,63 +326,10 @@
     <iframe src="calendar.html" width="1130" height="400"></iframe>                          
    </div>
 
-<div id="hm1" style="width: 900px; height: 500px; margin: 0 auto"></div>
-<script src="hm.js"></script>
 
 
-   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
-    import { getDatabase, push, set, child, ref, onValue} from "https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAHRbCmE_ynGBxlW0x5J9u9H3XBOrFhedA",
-      authDomain: "beyou-21d2f.firebaseapp.com",
-      databaseURL: "https://beyou-21d2f-default-rtdb.firebaseio.com",
-      projectId: "beyou-21d2f",
-      storageBucket: "beyou-21d2f.appspot.com",
-      messagingSenderId: "718679255077",
-      appId: "1:718679255077:web:a5d19b54e474a1d968b7cc",
-      measurementId: "G-FVD7M6CJ1Z"
-    };
 
-    const app = initializeApp(firebaseConfig);
-
-    // So we don't add duplicate posts
-    let current_posts_added = [];
-    // So we can access the current type in findPost / onValue
-    var types = ["See BeSads.", "See BeDowns.", "See BeContents.", "See BeHappys.", "See BeEcstatics."];
-    var type = document.getElementById("typeText");
-    var active = document.getElementById("content");
-
-    var postDatabase = getDatabase(app);
-
-    function findPost() {
-        current_posts_added = []
-        const happyPost = ref(postDatabase);
-        var posts = child(happyPost, 'Posts');
-        var grid = document.getElementById("beYouGrid");
-        grid.innerHTML = "";
-        onValue(posts, (snapshot) => {
-            snapshot.forEach(function (childSnapshot) {
-
-                // get current "be" subsection
-
-                console.log("----------------");
-                console.log(childSnapshot.val().text);
-                console.log(childSnapshot.val().type, childSnapshot.key);
-                console.log(childSnapshot.val().location);
-                console.log(childSnapshot.val().time);
-                console.log(current_posts_added);
-                    console.log("SUCCESS");
-                    current_posts_added.push(childSnapshot.key);
-
-                    // Adding the html component
-                    grid.innerHTML += "<a href='#' class='dark bg-nord12 block w-full p-6 bg-nord1 rounded-lg border border-nord3 shadow-md hover:bg-nord2 dark:bg-nord1 dark:border-nord3 dark:hover:bg-nord3'> <h5 class='mb-2 text-2xl font-bold tracking-tight text-transparent text-3xl bg-clip-text bg-gradient-to-r from-nord8 to-nord9'>" + childSnapshot.val().text + "</h5> <p class='font-normal text-gray-700 dark:text-gray-400'>" + childSnapshot.val().time + "</p> </a>";
-        });
-      });
-    }
-    findPost();
-  </script>
 
 </body>
 
@@ -177,13 +339,6 @@
     <h2 class="text-nord4 text-l text-medium">Made with ❤️ by the <b>bonobo</b> team at HackCMU.</h2>
   </footer>
   <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
-<!-- <script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-
-<div id="container" style="width: 960px; height: 600px; margin: 0 auto"></div>
-<script src="figures-charts.js"></script> -->
-
 
 
 
